@@ -12,16 +12,6 @@ import (
 	"time"
 )
 
-func HalloGin (c *gin.Context) {
-	c.String(http.StatusOK, "Welcome Gin Server")
-}
-
-func GetRouter() *gin.Engine {
-	router := gin.Default()
-	router.GET("/", HalloGin )
-	return router
-}
-
 func StartServer(address string , router *gin.Engine)  {
 	srv := &http.Server{
 		Addr:    address,
