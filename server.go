@@ -3,7 +3,6 @@ package mblazed
 import (
 	"context"
 	"errors"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"os"
@@ -12,7 +11,7 @@ import (
 	"time"
 )
 
-func StartServer(address string , router *gin.Engine)  {
+func StartServer(address string , router http.Handler)  {
 	srv := &http.Server{
 		Addr:    address,
 		Handler: router,
