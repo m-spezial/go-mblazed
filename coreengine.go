@@ -9,7 +9,7 @@ import "net/http"
 type RequestHandler func(r IRequestContext)
 
 type CoreEngine struct {
-	router *httprouter.Router
+	router *Router
 	requestHandlerChain map[string] RequestHandler
 }
 
@@ -19,7 +19,7 @@ func (ce CoreEngine) GetDB() {
 
 func NewCoreEngine() *CoreEngine  {
 	return  &CoreEngine{
-		router: httprouter.New(),
+		router: NewRouter(),
 	}
 }
 
