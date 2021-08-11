@@ -2,8 +2,8 @@ package mblazed
 
 import (
 	"log"
+	"net/http"
 )
-import "net/http"
 
 type RequestHandler func(r IRequestContext)
 
