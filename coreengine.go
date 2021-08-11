@@ -1,7 +1,6 @@
 package mblazed
 
 import (
-	"github.com/julienschmidt/httprouter"
 	"log"
 )
 import "net/http"
@@ -20,13 +19,6 @@ func (ce CoreEngine) GetDB() {
 func NewCoreEngine() *CoreEngine  {
 	return  &CoreEngine{
 		router: NewRouter(),
-	}
-}
-
-func wrapViewHandle(handle RequestHandler) httprouter.Handle {
-	return func(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-		ctx := NewRequestContext(writer, request, params)
-		handle(ctx)
 	}
 }
 
@@ -66,7 +58,7 @@ func (ce *CoreEngine) DELETE(path string, handle RequestHandler) {
 }
 
 func (ce *CoreEngine) Handle(methode string, path string, handle RequestHandler) {
-	ce.router.Handle(methode, path, wrapViewHandle(handle))
+	ce.router.Handle(methode, path, wrapRequestHandle(handle))
 }
 
 func (ce *CoreEngine) ServeHTTP(writer http.ResponseWriter, request *http.Request) {

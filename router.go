@@ -9,6 +9,12 @@ type Router struct {
 	httprouter.Router
 }
 
+func wrapRequestHandle(handle RequestHandler) httprouter.Handle {
+	return func(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
+		ctx := NewRequestContext(writer, request, params)
+		handle(ctx)
+	}
+}
 
 func NewRouter() *Router  {
 	return &Router{httprouter.Router{
