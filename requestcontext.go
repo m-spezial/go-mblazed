@@ -15,8 +15,8 @@ type RequestContext struct {
 	params httprouter.Params
 }
 
-func NewRequestContext(writer http.ResponseWriter, request *http.Request, params httprouter.Params) RequestContext {
-	return RequestContext{
+func NewRequestContext(writer http.ResponseWriter, request *http.Request, params httprouter.Params) *RequestContext {
+	return &RequestContext{
 		PostData:   make(map[string] string),
 		stringData: make(map[string] string),
 		boolData:   make(map[string] bool),
@@ -27,38 +27,22 @@ func NewRequestContext(writer http.ResponseWriter, request *http.Request, params
 	}
 }
 
-func (r RequestContext) GetString(key string) string {
-	return r.stringData[key]
-}
-
-func (r RequestContext) SetString(key string, value string) {
-	r.stringData[key] = value
-}
-
-func (r RequestContext) GetBool(key string) bool {
-	return r.boolData[key]
-}
-
-func (r RequestContext) SetBool(key string, value bool) {
-	r.boolData[key] = value
-}
-
-func (r RequestContext) GetData(key string) interface{} {
+func (r *RequestContext) GetData(key string) interface{} {
 	return r.data[key]
 }
 
-func (r RequestContext) SetData(key string, data interface{}) {
+func (r *RequestContext) SetData(key string, data interface{}) {
 	r.data[key] = data
 }
 
-func (r RequestContext) GetResponseWriter() http.ResponseWriter {
+func (r *RequestContext) GetResponseWriter() http.ResponseWriter {
 	return  r.writer
 }
 
-func (r RequestContext) GetRequest() *http.Request {
+func (r *RequestContext) GetRequest() *http.Request {
 	return r.request
 }
 
-func (r RequestContext) GetParams() httprouter.Params {
+func (r *RequestContext) GetParams() httprouter.Params {
 	return r.params
 }
