@@ -19,6 +19,7 @@ func StartServer(address string , router http.Handler)  {
 
 	// Initializing the server in a goroutine so that
 	// it won't block the graceful shutdown handling below
+	log.Println("Starting server...")
 	go func() {
 		if err := srv.ListenAndServe(); err != nil && errors.Is(err, http.ErrServerClosed) {
 			log.Printf("listen: %s\n", err)
