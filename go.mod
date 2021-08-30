@@ -7,7 +7,7 @@ require (
 	github.com/gin-contrib/sessions v0.0.4-0.20210404223021-de01a566c671
 	github.com/gin-gonic/gin v1.7.3
 	github.com/jackc/pgx/v4 v4.13.0 // indirect
-	github.com/julienschmidt/httprouter v1.3.0 // indirect
+	github.com/julienschmidt/httprouter v1.3.0
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/stretchr/testify v1.7.0 // indirect
