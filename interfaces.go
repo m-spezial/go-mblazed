@@ -21,3 +21,7 @@ type IRequestContext interface {
 	GetRequest() *http.Request
 	GetParams() httprouter.Params
 }
+
+type IMblazedPlugin interface {
+	
+}
