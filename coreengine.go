@@ -1,13 +1,14 @@
 package mblazed
 
 import (
+	"code.m-spezial.de/M-Spezial/go-mblazed/logic"
 	"github.com/julienschmidt/httprouter"
 	"log"
 	"net/http"
 )
 
-type RequestHandler func(r IRequestContext)
-type RequestContextProcessor func(ctx IRequestContext) IRequestContext
+type RequestHandler func(r logic.RequestContextInterface)
+type RequestContextProcessor func(ctx logic.RequestContextInterface) logic.RequestContextInterface
 
 type CoreEngine struct {
 	router                       *Router
@@ -18,15 +19,15 @@ func (ce CoreEngine) GetDB() {
 
 }
 
-func NewCoreEngine() *CoreEngine  {
-	return  &CoreEngine{
-		router:                       NewRouter(),
+func NewCoreEngine() *CoreEngine {
+	return &CoreEngine{
+		router: NewRouter(),
 	}
 }
 
 func (ce *CoreEngine) wrapRequestHandle(handle RequestHandler) httprouter.Handle {
 	return func(writer http.ResponseWriter, request *http.Request, params httprouter.Params) {
-		var ctx IRequestContext
+		var ctx logic.RequestContextInterface
 		ctx = NewRequestContext(writer, request, params)
 		for i := 0; i < len(ce.requestContextProcessorChain); i++ {
 			ctx = ce.requestContextProcessorChain[i](ctx)
