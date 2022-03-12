@@ -1,10 +1,10 @@
 package logic
 
-type CoreEngineInterface interface {
+type CoreEngine interface {
 	GetDb()
-	GetRenderEngine() RenderEngineInterface
+	GetRenderEngine() RenderEngine
 }
 
-type RenderEngineInterface interface {
+type RenderEngine interface {
 	RenderHtml(templateName string)
 }
