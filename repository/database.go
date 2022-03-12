@@ -7,10 +7,10 @@ import (
 	"errors"
 )
 
-func NewRepository(config *config.DatabaseConfig) (logic.Repository, error) {
+func NewUserRepository(config *config.DatabaseConfig) (logic.UserRepository, error) {
 	switch config.DatabaseType {
 	case "postgres":
-		return postgres.NewRepository(config)
+		return postgres.NewUserRepository(config)
 	default:
 		return nil, errors.New("database type not supported")
 	}
