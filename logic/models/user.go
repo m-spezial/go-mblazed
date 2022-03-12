@@ -7,9 +7,8 @@ import (
 type DBUser struct {
 	DBModel
 
-	Username string
-	Lastname string
-	Email    string `gorm:"unique"`
+	Username string `gorm:"index,unique"`
+	Email    string `gorm:"index"`
 
 	LastLogin   time.Time
 	FailedLogin int
