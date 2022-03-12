@@ -1,8 +1,10 @@
 package mblazed
 
 import (
+	"code.m-spezial.de/M-Spezial/go-mblazed/config"
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
@@ -11,9 +13,9 @@ import (
 	"time"
 )
 
-func StartServer(address string , router http.Handler)  {
+func StartServer(config *config.ServerConfig, router http.Handler) {
 	srv := &http.Server{
-		Addr:    address,
+		Addr:    fmt.Sprintf("%s:%d", config.Host, config.Port),
 		Handler: router,
 	}
 
