@@ -18,7 +18,7 @@ type GormLogger struct {
 }
 
 func NewGormLogger(logConfig logger.Config) (logger.Interface, error) {
-	zapLogger, err := zap.NewProduction()
+	zapLogger, err := LoggerConfig.Build()
 
 	if err != nil {
 		return nil, err
