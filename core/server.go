@@ -1,4 +1,4 @@
-package mblazed
+package core
 
 import (
 	"code.m-spezial.de/M-Spezial/go-mblazed/config"

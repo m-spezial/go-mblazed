@@ -1,4 +1,4 @@
-package mblazed
+package core
 
 import (
 	"github.com/julienschmidt/httprouter"
@@ -7,10 +7,10 @@ import (
 
 type Router struct {
 	httprouter.Router
-	reverseMap map[string] string
+	reverseMap map[string]string
 }
 
-func NewRouter() *Router  {
+func NewRouter() *Router {
 	return &Router{
 		Router: httprouter.Router{
 			RedirectTrailingSlash:  true,
@@ -22,7 +22,7 @@ func NewRouter() *Router  {
 			MethodNotAllowed:       nil,
 			PanicHandler:           nil,
 		},
-		reverseMap: make(map[string] string),
+		reverseMap: make(map[string]string),
 	}
 }
 
@@ -66,10 +66,10 @@ func (r *Router) Handle(methode string, pathname string, path string, handle htt
 	r.Router.Handle(methode, path, handle)
 }
 
-func (r *Router) ANY (pathname string, path string, handle httprouter.Handle)  {
+func (r *Router) ANY(pathname string, path string, handle httprouter.Handle) {
 	r.RegisterReverseRoute(pathname, path)
 }
 
-func (r *Router) RegisterReverseRoute(name string, path string)  {
+func (r *Router) RegisterReverseRoute(name string, path string) {
 	r.reverseMap[name] = path
 }

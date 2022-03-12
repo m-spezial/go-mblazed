@@ -1,4 +1,4 @@
-package mblazed
+package core
 
 type Renderer struct {
 	templatePath string
