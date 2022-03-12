@@ -13,7 +13,7 @@ type DBModel struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
-// BeforeCreate will set a UUID rather than numeric ID.
+// BeforeCreate will set a nano id rather than numeric ID.
 func (base *DBModel) BeforeCreate(db *gorm.DB) error {
 	id, err := gonanoid.ID(21)
 
