@@ -2,11 +2,14 @@ package postgres
 
 import (
 	"code.m-spezial.de/M-Spezial/go-mblazed/config"
+	"code.m-spezial.de/M-Spezial/go-mblazed/log"
 	"code.m-spezial.de/M-Spezial/go-mblazed/logic"
 	"code.m-spezial.de/M-Spezial/go-mblazed/logic/models"
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"time"
 )
 
 type userRepository struct {
@@ -23,7 +26,22 @@ func NewUserRepository(config *config.DatabaseConfig) (logic.UserRepository, err
 		config.Database,
 		config.Password)
 
-	conn, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	gormLogger, err := log.NewGormLogger(
+		logger.Config{
+			SlowThreshold:             time.Second,  // Slow SQL threshold
+			LogLevel:                  logger.Error, // Log level
+			IgnoreRecordNotFoundError: true,         // Ignore ErrRecordNotFound error for logger
+			Colorful:                  false,        // Disable color
+		},
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	conn, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
+		Logger: gormLogger,
+	})
 
 	if err != nil {
 		return nil, err
