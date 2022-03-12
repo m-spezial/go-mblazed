@@ -1,6 +1,8 @@
 package logic
 
-import "code.m-spezial.de/M-Spezial/go-mblazed/logic/models"
+import (
+	"code.m-spezial.de/M-Spezial/go-mblazed/models"
+)
 
 // UserRepository is an interface for storing persistent data of the User
 type UserRepository interface {
@@ -14,4 +16,3 @@ type UserRepository interface {
 	GetAll() ([]*models.DBUser, error)
 	GetByFilter(filter string) ([]*models.DBUser, error)
 }
-

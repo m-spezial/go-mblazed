@@ -4,7 +4,7 @@ import (
 	"code.m-spezial.de/M-Spezial/go-mblazed/config"
 	"code.m-spezial.de/M-Spezial/go-mblazed/log"
 	"code.m-spezial.de/M-Spezial/go-mblazed/logic"
-	"code.m-spezial.de/M-Spezial/go-mblazed/logic/models"
+	"code.m-spezial.de/M-Spezial/go-mblazed/models"
 	"fmt"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
