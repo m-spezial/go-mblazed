@@ -2,14 +2,10 @@ package postgres
 
 import (
 	"code.m-spezial.de/M-Spezial/go-mblazed/config"
-	"code.m-spezial.de/M-Spezial/go-mblazed/log"
 	"code.m-spezial.de/M-Spezial/go-mblazed/logic"
 	"code.m-spezial.de/M-Spezial/go-mblazed/models"
-	"fmt"
-	"gorm.io/driver/postgres"
+	"errors"
 	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
-	"time"
 )
 
 type userRepository struct {
@@ -19,36 +15,10 @@ type userRepository struct {
 
 func NewUserRepository(config *config.DatabaseConfig) (logic.UserRepository, error) {
 
-	dsn := fmt.Sprintf("host=%s port=%d user=%s dbname=%s password=%s sslmode=disable",
-		config.Host,
-		config.Port,
-		config.Username,
-		config.Database,
-		config.Password)
-
-	gormLogger, err := log.NewGormLogger(
-		logger.Config{
-			SlowThreshold:             time.Second,  // Slow SQL threshold
-			LogLevel:                  logger.Error, // Log level
-			IgnoreRecordNotFoundError: true,         // Ignore ErrRecordNotFound error for logger
-			Colorful:                  false,        // Disable color
-		},
-	)
+	conn, err := NewConnection(config)
 
 	if err != nil {
 		return nil, err
-	}
-
-	conn, err := gorm.Open(postgres.Open(dsn), &gorm.Config{
-		Logger: gormLogger,
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	if config.Debug {
-		conn.Debug()
 	}
 
 	return &userRepository{
@@ -56,6 +26,17 @@ func NewUserRepository(config *config.DatabaseConfig) (logic.UserRepository, err
 		Conn:   conn,
 	}, nil
 
+}
+
+func (u userRepository) Migrate(currentVersion string) (string, error) {
+	switch currentVersion {
+	case "":
+		return "1.0.0", u.Conn.AutoMigrate(&models.DBUser{})
+	case "1.0.0":
+		return "1.0.0", nil
+	}
+
+	return "", errors.New("unsupported version")
 }
 
 // GetByID returns the user by his ID from the database
