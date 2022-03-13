@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"go.uber.org/zap"
+	"go.uber.org/zap/zapcore"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/utils"
@@ -24,9 +25,22 @@ func NewGormLogger(logConfig logger.Config) (logger.Interface, error) {
 		return nil, err
 	}
 
+	var logLevel logger.LogLevel
+
+	switch LoggerConfig.Level.Level() {
+	case zapcore.DebugLevel:
+		logLevel = logger.Info
+	case zapcore.InfoLevel:
+		logLevel = logger.Warn
+	case zapcore.WarnLevel:
+		logLevel = logger.Warn
+	default:
+		logLevel = logger.Error
+	}
+
 	return &GormLogger{
 		Config:    logConfig,
-		LogLevel:  logger.Info,
+		LogLevel:  logLevel,
 		ZapLogger: zapLogger.Sugar(),
 	}, nil
 }
@@ -104,7 +118,7 @@ func (g GormLogger) Trace(ctx context.Context, begin time.Time, fc func() (sql s
 				zap.String("file", utils.FileWithLineNum()),
 			)
 		} else {
-			g.ZapLogger.Warnw("TRACE",
+			g.ZapLogger.Infow("TRACE",
 				zap.String("sql", sql),
 				zap.Float64("time", float64(elapsed.Nanoseconds())/1e6),
 				zap.String("file", utils.FileWithLineNum()),

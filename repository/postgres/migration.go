@@ -33,8 +33,13 @@ func (m migrationRepository) Migrate(currentVersion string) (string, error) {
 
 func (m migrationRepository) GetMigratorVersion(name string) (string, error) {
 	var migrator models.Migrator
-	err := m.Conn.Where("name = ?", name).First(&migrator).Error
+	err := m.Conn.Where("name = ?", name).FirstOrInit(&migrator, models.Migrator{}).Error
 	if err != nil {
+
+		if err == gorm.ErrRecordNotFound {
+			return "", nil
+		}
+
 		return "", err
 	}
 	return migrator.Version, nil
@@ -42,7 +47,11 @@ func (m migrationRepository) GetMigratorVersion(name string) (string, error) {
 
 func (m migrationRepository) UpdateMigratorVersion(name string, version string) error {
 	var migrator models.Migrator
-	err := m.Conn.Where("name = ?", name).First(&migrator).Error
+
+	migrator.Name = name
+	migrator.Version = version
+	
+	err := m.Conn.Where("name = ?", name).FirstOrCreate(&migrator).Error
 	if err != nil {
 		return err
 	}

@@ -47,7 +47,9 @@ func (m *Migrator) AddRepository(migrator logic.Repository) {
 
 func (m *Migrator) Migrate() error {
 	for _, migrator := range m.Repositories {
-		name := reflect.TypeOf(migrator).PkgPath()
+		typeData := reflect.TypeOf(migrator)
+		name := typeData.Elem().PkgPath() + "." + typeData.Elem().Name()
+
 		version, err := m.MigrationRepository.GetMigratorVersion(name)
 
 		if err != nil {
