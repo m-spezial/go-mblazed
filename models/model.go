@@ -1,7 +1,7 @@
 package models
 
 import (
-	gonanoid "github.com/matoous/go-nanoid"
+	nanoid "github.com/matoous/go-nanoid"
 	"gorm.io/gorm"
 	"time"
 )
@@ -15,7 +15,7 @@ type DBModel struct {
 
 // BeforeCreate will set a nano id rather than numeric ID.
 func (base *DBModel) BeforeCreate(db *gorm.DB) error {
-	id, err := gonanoid.ID(21)
+	id, err := nanoid.ID(21)
 
 	if err != nil {
 		return err
@@ -33,7 +33,7 @@ type Migrator struct {
 
 // BeforeCreate will set a nano id rather than numeric ID.
 func (base *Migrator) BeforeCreate(db *gorm.DB) error {
-	id, err := gonanoid.ID(21)
+	id, err := nanoid.ID(21)
 
 	if err != nil {
 		return err
